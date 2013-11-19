@@ -1,0 +1,32 @@
+body {
+    margin: 2em 4em;
+    font-family: sans-serif;
+}
+
+h1 {
+    font-family: serif;
+}
+
+label {
+    display: block;
+}
+
+input,
+textarea {
+    border: 1px lightgray solid;
+    margin: 1ex 0 2ex 2em;
+    padding: .5em;
+    width: 300px;
+    font-family: monospace;
+}
+
+input[type='submit'],
+input[type='reset'],
+input[type='button'] {
+    width: auto;
+    padding: .5em 1em;
+}
+
+textarea {
+    height: 100px;
+}

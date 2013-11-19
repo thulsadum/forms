@@ -1,0 +1,27 @@
+<?xml version="1.0" ?>
+<?xml-stylesheet type="text/xsl" href="../form2html.xsl" ?>
+<form
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="../form.xsd"
+        title="Contact me"
+        method="post"
+        action="mailto:john.doe@example.com"
+        enctype="text/plain"
+        >
+    <text name="name">
+        <label>
+            Name:
+        </label>
+    </text>
+
+    <email name="email">
+        <label>
+            Email:
+        </label>
+    </email>
+    <textarea id="message" name="message">
+        <label>Message:</label>
+    </textarea>
+    <raw><br /></raw>
+    <actions />
+</form>

@@ -1,0 +1,141 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:attributeGroup name="baseAttributes" >
+        <xs:attribute name="id" type="xs:ID" use="optional" />
+        <xs:attribute name="class" type="xs:string" use="optional" />
+    </xs:attributeGroup>
+
+    <xs:attributeGroup name="commonAttributes">
+        <xs:attributeGroup ref="baseAttributes" />
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="required" type="xs:boolean" default="false" />
+        <xs:attribute name="disabled" type="xs:boolean" default="false" />
+    </xs:attributeGroup>
+
+    <xs:group name="innerFieldElementsGroup">
+        <xs:choice>
+            <xs:element name="label" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:simpleContent>
+                        <xs:extension base="xs:anyType">
+                            <xs:attributeGroup ref="baseAttributes" />
+                            <xs:attribute name="position" default="before">
+                                <xs:simpleType>
+                                    <xs:restriction base="xs:string">
+                                        <xs:enumeration value="before" />
+                                        <xs:enumeration value="after" />
+                                    </xs:restriction>
+                                </xs:simpleType>
+                            </xs:attribute>
+                        </xs:extension>
+                    </xs:simpleContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="style">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="prepend" type="xs:string" use="optional"/>
+                            <xs:attribute name="append" type="xs:string" use="optional"/>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+            <xs:element name="script">
+                <xs:complexType>
+                    <xs:complexContent>
+                        <xs:extension base="xs:string">
+                            <xs:attribute name="event" use="optional" default="ready">
+                                <xs:simpleType>
+                                    <xs:list>
+                                        <xs:simpleType>
+                                            <xs:restriction base="xs:string">
+                                                <xs:enumeration value="ready" />
+                                                <xs:enumeration value="blur" />
+                                                <xs:enumeration value="change" />
+                                                <xs:enumeration value="click" />
+                                                <xs:enumeration value="dblclick" />
+                                                <xs:enumeration value="focus" />
+                                                <xs:enumeration value="focusin" />
+                                                <xs:enumeration value="focusout" />
+                                                <xs:enumeration value="hover" />
+                                                <xs:enumeration value="keydown" />
+                                                <xs:enumeration value="keypress" />
+                                                <xs:enumeration value="keyup" />
+                                                <xs:enumeration value="mousedown" />
+                                                <xs:enumeration value="mouseenter" />
+                                                <xs:enumeration value="mouseleave" />
+                                                <xs:enumeration value="mousemove" />
+                                                <xs:enumeration value="mouseout" />
+                                                <xs:enumeration value="mouseover" />
+                                                <xs:enumeration value="mouseup" />
+                                                <xs:enumeration value="select" />
+                                                <xs:enumeration value="submit" />
+                                            </xs:restriction>
+                                        </xs:simpleType>
+                                    </xs:list>
+                                </xs:simpleType>
+                            </xs:attribute>
+                        </xs:extension>
+                    </xs:complexContent>
+                </xs:complexType>
+            </xs:element>
+        </xs:choice>
+    </xs:group>
+
+    <xs:complexType name="baseFieldType">
+        <xs:sequence>
+            <xs:group ref="innerFieldElementsGroup" minOccurs="0" maxOccurs="unbounded" />
+        </xs:sequence>
+        <xs:attributeGroup ref="commonAttributes" />
+    </xs:complexType>
+
+    <xs:group name="formFields">
+        <xs:choice>
+            <xs:element name="text" type="baseFieldType" />
+            <xs:element name="password" type="baseFieldType" />
+            <xs:element name="email" type="baseFieldType" />
+            <xs:element name="textarea" type="baseFieldType" />
+            <xs:element name="submit" type="baseFieldType" />
+            <xs:element name="reset" type="baseFieldType" />
+            <xs:element name="button" type="baseFieldType" />
+
+            <xs:element name="actions" type="xs:element" />
+
+            <!-- not actual a component, but nice to have, i guess -->
+            <xs:element name="raw" type="xs:anyType" />
+        </xs:choice>
+    </xs:group>
+
+    <xs:element name="form">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="head" minOccurs="0" type="xs:anyType" />
+                <xs:group ref="formFields" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="foot" minOccurs="0" type="xs:anyType" />
+            </xs:sequence>
+            <xs:attribute name="title" type="xs:string" use="optional" />
+            <xs:attribute name="action" type="xs:string" use="optional" />
+            <xs:attribute name="method" type="methodType" default="get" />
+            <xs:attribute name="stylesheet" type="xs:string" default="form.css" />
+            <xs:attribute name="enctype">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="application/x-www-form-urlencoded" />
+                        <xs:enumeration value="multipart/form-data" />
+                        <xs:enumeration value="text/plain" />
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+            <xs:attributeGroup ref="baseAttributes" />
+        </xs:complexType>
+    </xs:element>
+
+    <xs:simpleType name="methodType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="get" />
+            <xs:enumeration value="post" />
+        </xs:restriction>
+    </xs:simpleType>
+
+</xs:schema>
