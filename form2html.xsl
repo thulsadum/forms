@@ -19,14 +19,33 @@
         </xsl:if>
     </xsl:template>
 
+    <xsl:template name="putClass">
+        <xsl:param name="extraClasses" select="''" />
+        <xsl:if test="@class or $extraClasses!=''">
+            <xsl:attribute name="class">
+                <xsl:value-of select="@class" />
+                <xsl:value-of select="$extraClasses" />
+            </xsl:attribute>
+        </xsl:if>
+    </xsl:template>
+
     <xsl:template name="baseFields">
+        <xsl:param name="extraClasses" select="''" />
         <xsl:call-template name="optAttr"><xsl:with-param name="attr">id</xsl:with-param></xsl:call-template>
-        <xsl:call-template name="optAttr"><xsl:with-param name="attr">class</xsl:with-param></xsl:call-template>
+        <xsl:call-template name="putClass"><xsl:with-param name="extraClasses"><xsl:value-of select="$extraClasses" /></xsl:with-param></xsl:call-template>
     </xsl:template>
 
     <xsl:template name="commonFields">
-        <xsl:call-template name="baseFields" />
-        <xsl:call-template name="optAttr"><xsl:with-param name="attr">name</xsl:with-param></xsl:call-template>
+        <xsl:param name="extraClasses" select="''" />
+        <xsl:call-template name="baseFields">
+            <xsl:with-param name="extraClasses"><xsl:value-of select="$extraClasses" /></xsl:with-param>
+        </xsl:call-template>
+        <xsl:if test="not(@id) and @name">
+            <xsl:attribute name="id"><xsl:value-of select="@name" /></xsl:attribute>
+        </xsl:if>
+        <xsl:call-template name="optAttr">
+            <xsl:with-param name="attr">name</xsl:with-param>
+        </xsl:call-template>
     </xsl:template>
 
     <xsl:template name="copy">
@@ -122,12 +141,26 @@
 
     <xsl:template match="label">
         <label>
-            <xsl:call-template name="baseFields" />
-            <xsl:if test="../@id">
-                <xsl:attribute name="for">
-                    <xsl:value-of select="../@id" />
-                </xsl:attribute>
-            </xsl:if>
+            <xsl:call-template name="baseFields">
+                <xsl:with-param name="extraClasses">
+                    <xsl:choose>
+                        <xsl:when test="@position[text()='after']"> after</xsl:when>
+                        <xsl:otherwise> before</xsl:otherwise>
+                    </xsl:choose>
+                </xsl:with-param>
+            </xsl:call-template>
+            <xsl:choose>
+                <xsl:when test="../@id">
+                    <xsl:attribute name="for">
+                        <xsl:value-of select="../@id" />
+                    </xsl:attribute>
+                </xsl:when>
+                <xsl:when test="../@name">
+                    <xsl:attribute name="for">
+                        <xsl:value-of select="../@name" />
+                    </xsl:attribute>
+                </xsl:when>
+            </xsl:choose>
 
             <xsl:call-template name="copy" />
         </label>
