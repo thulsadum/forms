@@ -9,18 +9,14 @@
         enctype="text/plain"
         >
     <text name="name">
-        <label>
-            Name:
-        </label>
+        <label>Name</label>
     </text>
 
     <email name="email">
-        <label>
-            Email:
-        </label>
+        <label>Email</label>
     </email>
-    <textarea id="message" name="message">
-        <label>Message:</label>
+    <textarea name="message">
+        <label>Message</label>
     </textarea>
     <raw><br /></raw>
     <actions />

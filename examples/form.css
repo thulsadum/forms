@@ -7,6 +7,14 @@ h1 {
     font-family: serif;
 }
 
+label.before:after {
+    content: ":";
+}
+
+label.before.nocolon:after {
+    content: "";
+}
+
 label {
     display: block;
 }
